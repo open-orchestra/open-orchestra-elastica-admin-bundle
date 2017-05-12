@@ -1,0 +1,23 @@
+open_orchestra_backoffice:
+    block:
+        elastica_search:
+            title: Elastica search
+        elastica_list:
+            title: Elastica result list
+
+open_orchestra_elastica_admin:
+    block:
+        elastica_search:
+            title: Elastica search
+            description: Elastica search field
+        elastica_list:
+            title: Elastica result list
+            description: Elastica search results list
+    form:
+        elastica_list:
+            search_limit: Results limit
+        elastica_search:
+            node: Node to view results
+    block_configuration:
+        category:
+            search: Search

@@ -1,0 +1,16 @@
+open_orchestra_elastica_admin:
+    block:
+        elastica_search:
+            title: Recherche Elastica
+            description: Champs de recherche Elastica
+        elastica_list:
+            title: Liste de résultat Elastica
+            description: Liste de résultats de la recherche
+    form:
+        elastica_list:
+            search_limit: Limite de résultat
+        elastica_search:
+            node: Nœud d'affichage des résultats
+    block_configuration:
+        category:
+            search: Recherche
