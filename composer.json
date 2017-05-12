@@ -42,8 +42,7 @@
   "autoload": {
     "psr-4": {
       "OpenOrchestra\\ElasticaAdminBundle\\": "ElasticaAdminBundle/",
-      "OpenOrchestra\\ElasticaAdmin\\": "ElasticaAdmin/",
-      "OpenOrchestra\\ElasticaBundle\\": "ElasticaBundle/"
+      "OpenOrchestra\\ElasticaAdmin\\": "ElasticaAdmin/"
     }
   }
 }
