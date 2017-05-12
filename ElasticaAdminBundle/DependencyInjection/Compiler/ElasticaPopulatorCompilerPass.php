@@ -20,8 +20,8 @@ class ElasticaPopulatorCompilerPass extends AbstractTaggedCompiler implements Co
      */
     public function process(ContainerBuilder $container)
     {
-        $managerName = 'open_orchestra_elastica.populator.manager';
-        $tagName = 'open_orchestra_elastica.populator.strategy';
+        $managerName = 'open_orchestra_elastica_admin.populator.manager';
+        $tagName = 'open_orchestra_elastica_admin.populator.strategy';
 
         $this->addStrategyToManager($container, $managerName, $tagName, 'addPopulator');
     }

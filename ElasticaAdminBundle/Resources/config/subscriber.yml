@@ -5,13 +5,13 @@ parameters:
 
 services:
     open_orchestra_elastica_admin.subscriber.content_index:
-        class: '%open_orchestra_elastica.subscriber.content_index.class%'
+        class: '%open_orchestra_elastica_admin.subscriber.content_index.class%'
         arguments:
-            - '@open_orchestra_elastica.indexor.content'
+            - '@open_orchestra_elastica_admin.indexor.content'
         tags:
             - { name: kernel.event_subscriber }
     open_orchestra_elastica_admin.subscriber.content_schema:
-        class: '%open_orchestra_elastica.subscriber.content_schema.class%'
+        class: '%open_orchestra_elastica_admin.subscriber.content_schema.class%'
         arguments:
             - '@open_orchestra_elastica_admin.schema_generator.content_type'
         tags:

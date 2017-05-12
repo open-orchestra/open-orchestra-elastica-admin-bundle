@@ -20,8 +20,8 @@ class SchemaInitializerCompilerPass extends AbstractTaggedCompiler implements Co
      */
     public function process(ContainerBuilder $container)
     {
-        $managerName = 'open_orchestra_elastica.schema_initializer.manager';
-        $tagName = 'open_orchestra_elastica.schema_initializer.strategy';
+        $managerName = 'open_orchestra_elastica_admin.schema_initializer.manager';
+        $tagName = 'open_orchestra_elastica_admin.schema_initializer.strategy';
 
         $this->addStrategyToManager($container, $managerName, $tagName, 'addInitializer');
     }

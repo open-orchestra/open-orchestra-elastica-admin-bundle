@@ -4,14 +4,14 @@ parameters:
 
 services:
     open_orchestra_elastica_admin.schema_generator.content_type:
-        class: '%open_orchestra_elastica.schema_generator.content_type.class%'
+        class: '%open_orchestra_elastica_admin.schema_generator.content_type.class%'
         arguments:
             - '@open_orchestra_elastica.client.elastica'
             - '@open_orchestra_elastica_admin.mapper.form'
             - '%open_orchestra_elastica.index.name%'
             - '@open_orchestra_elastica_admin.factory.mapping'
     open_orchestra_elastica_admin.schema_generator.node:
-        class: '%open_orchestra_elastica.schema_generator.node.class%'
+        class: '%open_orchestra_elastica_admin.schema_generator.node.class%'
         arguments:
             - '@open_orchestra_elastica.client.elastica'
             - '%open_orchestra_elastica.index.name%'

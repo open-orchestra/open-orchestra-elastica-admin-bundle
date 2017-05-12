@@ -3,9 +3,9 @@ parameters:
     open_orchestra_elastica_admin.transformer.node.class: OpenOrchestra\ElasticaAdmin\Transformer\NodeTransformer
 
 services:
-    open_orchestra_elastica.transformer.content:
+    open_orchestra_elastica_admin.transformer.content:
         class: '%open_orchestra_elastica_admin.transformer.content.class%'
-    open_orchestra_elastica.transformer.node:
+    open_orchestra_elastica_admin.transformer.node:
         class: '%open_orchestra_elastica_admin.transformer.node.class%'
         arguments:
             - '@open_orchestra_display.display_block_manager'

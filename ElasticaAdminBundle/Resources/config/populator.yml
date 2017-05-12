@@ -5,16 +5,16 @@ parameters:
 
 services:
     open_orchestra_elastica_admin.populator.manager:
-        class: '%open_orchestra_elastica.populator.manager.class%'
+        class: '%open_orchestra_elastica_admin.populator.manager.class%'
 
     open_orchestra_elastica_admin.populator.content:
-        class: '%open_orchestra_elastica.populator.content.class%'
+        class: '%open_orchestra_elastica_admin.populator.content.class%'
         arguments:
             - '@open_orchestra_elastica_admin.indexor.content'
             - '@open_orchestra_model.repository.content'
             - '%open_orchestra_backoffice.orchestra_choice.front_language%'
         tags:
-            - { name: open_orchestra_elastica.populator.strategy}
+            - { name: open_orchestra_elastica_admin.populator.strategy}
 
     open_orchestra_elastica_admin.populator.node:
         class: '%open_orchestra_elastica_admin.populator.node.class%'
@@ -22,4 +22,4 @@ services:
             - '@open_orchestra_elastica_admin.indexor.node'
             - '@open_orchestra_model.repository.node'
         tags:
-            - { name: open_orchestra_elastica.populator.strategy}
+            - { name: open_orchestra_elastica_admin.populator.strategy}

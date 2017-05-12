@@ -13,11 +13,11 @@ services:
             - '@open_orchestra_model.repository.content_type'
             - '@open_orchestra_elastica_admin.schema_generator.content_type'
         tags:
-            - { name: open_orchestra_elastica.schema_initializer.strategy }
+            - { name: open_orchestra_elastica_admin.schema_initializer.strategy }
 
     open_orchestra_elastica_admin.schema_initializer.node:
         class: '%open_orchestra_elastica_admin.schema_initializer.node.class%'
         arguments:
             - '@open_orchestra_elastica_admin.schema_generator.node'
         tags:
-            - { name: open_orchestra_elastica.schema_initializer.strategy }
+            - { name: open_orchestra_elastica_admin.schema_initializer.strategy }

@@ -32,6 +32,6 @@ class OrchestraPopulateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getContainer()->get('open_orchestra_elastica.populator.manager')->populate();
+        $this->getContainer()->get('open_orchestra_elastica_admin.populator.manager')->populate();
     }
 }
