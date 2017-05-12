@@ -1,0 +1,23 @@
+parameters:
+    open_orchestra_elastica_admin.schema_initializer.content_type.class: OpenOrchestra\ElasticaAdmin\SchemaInitializer\Strategies\ContentTypeSchemaInitializer
+    open_orchestra_elastica_admin.schema_initializer.node.class: OpenOrchestra\ElasticaAdmin\SchemaInitializer\Strategies\NodeSchemaInitializer
+    open_orchestra_elastica_admin.schema_initializer.manager.class: OpenOrchestra\ElasticaAdmin\SchemaInitializer\SchemaInitializerManager
+
+services:
+    open_orchestra_elastica_admin.schema_initializer.manager:
+        class: '%open_orchestra_elastica_admin.schema_initializer.manager.class%'
+
+    open_orchestra_elastica_admin.schema_initializer.content_type:
+        class: '%open_orchestra_elastica_admin.schema_initializer.content_type.class%'
+        arguments:
+            - '@open_orchestra_model.repository.content_type'
+            - '@open_orchestra_elastica_admin.schema_generator.content_type'
+        tags:
+            - { name: open_orchestra_elastica.schema_initializer.strategy }
+
+    open_orchestra_elastica_admin.schema_initializer.node:
+        class: '%open_orchestra_elastica_admin.schema_initializer.node.class%'
+        arguments:
+            - '@open_orchestra_elastica_admin.schema_generator.node'
+        tags:
+            - { name: open_orchestra_elastica.schema_initializer.strategy }

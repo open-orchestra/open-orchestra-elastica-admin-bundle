@@ -15,7 +15,8 @@
     "ruflin/elastica": "~3.2.3",
     "open-orchestra/open-orchestra-model-interface": "self.version",
     "open-orchestra/open-orchestra-display-bundle": "self.version",
-    "open-orchestra/open-orchestra-base-bundle": "self.version"
+    "open-orchestra/open-orchestra-base-bundle": "self.version",
+    "open-orchestra/open-orchestra-elastica-bundle": "self.version"
   },
 
   "require-dev": {
@@ -42,10 +43,7 @@
     "psr-4": {
       "OpenOrchestra\\ElasticaAdminBundle\\": "ElasticaAdminBundle/",
       "OpenOrchestra\\ElasticaAdmin\\": "ElasticaAdmin/",
-      "OpenOrchestra\\ElasticaFrontBundle\\": "ElasticaFrontBundle/",
-      "OpenOrchestra\\ElasticaFront\\": "ElasticaFront/",
-      "OpenOrchestra\\ElasticaBundle\\": "ElasticaBundle/",
-      "OpenOrchestra\\Elastica\\": "Elastica/"
+      "OpenOrchestra\\ElasticaBundle\\": "ElasticaBundle/"
     }
   }
 }

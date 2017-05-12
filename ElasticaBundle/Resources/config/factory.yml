@@ -1,6 +1,0 @@
-parameters:
-    open_orchestra_elastica.factory.mapping.class: OpenOrchestra\Elastica\Factory\MappingFactory
-
-services:
-    open_orchestra_elastica.factory.mapping:
-        class: '%open_orchestra_elastica.factory.mapping.class%'

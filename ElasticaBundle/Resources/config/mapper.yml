@@ -1,6 +1,0 @@
-parameters:
-    open_orchestra_elastica.mapper.form.class: OpenOrchestra\Elastica\Mapper\FieldToElasticaTypeMapper
-
-services:
-    open_orchestra_elastica.mapper.form:
-        class: '%open_orchestra_elastica.mapper.form.class%'

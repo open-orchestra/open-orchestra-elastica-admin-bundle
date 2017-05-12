@@ -1,0 +1,18 @@
+parameters:
+    open_orchestra_elastica_admin.indexor.content.class: OpenOrchestra\ElasticaAdmin\Indexor\ContentIndexor
+    open_orchestra_elastica_admin.indexor.node.class: OpenOrchestra\ElasticaAdmin\Indexor\NodeIndexor
+
+services:
+    open_orchestra_elastica_admin.indexor.content:
+        class: '%open_orchestra_elastica_admin.indexor.content.class%'
+        arguments:
+            - '@open_orchestra_elastica.client.elastica'
+            - '@open_orchestra_elastica_admin.transformer.content'
+            - '%open_orchestra_elastica_admin.index.name%'
+
+    open_orchestra_elastica_admin.indexor.node:
+        class: '%open_orchestra_elastica.indexor.node.class%'
+        arguments:
+            - '@open_orchestra_elastica.client.elastica'
+            - '@open_orchestra_elastica_admin.transformer.node'
+            - '%open_orchestra_elastica_admin.index.name%'

@@ -1,0 +1,6 @@
+parameters:
+    open_orchestra_elastica_admin.mapper.form.class: OpenOrchestra\ElasticaAdmin\Mapper\FieldToElasticaTypeMapper
+
+services:
+    open_orchestra_elastica_admin.mapper.form:
+        class: '%open_orchestra_elastica_admin.mapper.form.class%'

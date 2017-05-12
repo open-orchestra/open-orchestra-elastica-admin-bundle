@@ -1,0 +1,24 @@
+parameters:
+    open_orchestra_elastica_admin.subscriber.content_index.class: OpenOrchestra\ElasticaAdmin\EventSubscriber\UpdateContentIndexedSubscriber
+    open_orchestra_elastica_admin.subscriber.node_index.class: OpenOrchestra\ElasticaAdmin\EventSubscriber\UpdateNodeIndexedSubscriber
+    open_orchestra_elastica_admin.subscriber.content_schema.class: OpenOrchestra\ElasticaAdmin\EventSubscriber\UpdateContentSchemaSubscriber
+
+services:
+    open_orchestra_elastica_admin.subscriber.content_index:
+        class: '%open_orchestra_elastica.subscriber.content_index.class%'
+        arguments:
+            - '@open_orchestra_elastica.indexor.content'
+        tags:
+            - { name: kernel.event_subscriber }
+    open_orchestra_elastica_admin.subscriber.content_schema:
+        class: '%open_orchestra_elastica.subscriber.content_schema.class%'
+        arguments:
+            - '@open_orchestra_elastica_admin.schema_generator.content_type'
+        tags:
+            - { name: kernel.event_subscriber }
+    open_orchestra_elastica_admin.subscriber.node_index:
+        class: '%open_orchestra_elastica_admin.subscriber.node_index.class%'
+        arguments:
+            - '@open_orchestra_elastica_admin.indexor.node'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -1,0 +1,6 @@
+parameters:
+    open_orchestra_elastica_admin.factory.mapping.class: OpenOrchestra\ElasticaAdmin\Factory\MappingFactory
+
+services:
+    open_orchestra_elastica_admin.factory.mapping:
+        class: '%open_orchestra_elastica_admin.factory.mapping.class%'
