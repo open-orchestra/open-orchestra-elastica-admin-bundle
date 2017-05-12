@@ -35,6 +35,7 @@ class NodeTransformer implements ModelToElasticaTransformerInterface
         $documentData = array(
             'id' => $node->getNodeId() . '-' . $node->getLanguage(). '-' . $node->getSiteId(),
             'elementId' => $node->getId(),
+            'nodeId' => $node->getNodeId(),
             'siteId' => $node->getSiteId(),
             'language' => $node->getLanguage(),
             'name' => $node->getName(),
