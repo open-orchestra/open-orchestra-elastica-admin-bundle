@@ -8,4 +8,4 @@ services:
     open_orchestra_elastica_admin.transformer.node:
         class: '%open_orchestra_elastica_admin.transformer.node.class%'
         arguments:
-            - '@open_orchestra_display.display_block_manager'
+            - '@open_orchestra_backoffice.display_block_manager'
