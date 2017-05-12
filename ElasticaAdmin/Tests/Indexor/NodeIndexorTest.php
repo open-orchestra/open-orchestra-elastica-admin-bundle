@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenOrchestra\Elastica\Tests\Indexor;
+namespace OpenOrchestra\ElasticaAdmin\Tests\Indexor;
 
 use Elastica\Client;
 use Elastica\Document;

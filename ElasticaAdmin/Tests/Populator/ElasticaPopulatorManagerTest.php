@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenOrchestra\Elastica\Tests\Populator;
+namespace OpenOrchestra\ElasticaAdmin\Tests\Populator;
 
 use OpenOrchestra\ElasticaAdmin\Populator\ElasticaPopulatorInterface;
 use OpenOrchestra\ElasticaAdmin\Populator\ElasticaPopulatorManager;
