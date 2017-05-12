@@ -78,6 +78,7 @@ class NodeTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array(
             'id' => 'nodeId-language-siteId',
             'elementId' => 'id',
+            'nodeId' => 'nodeId',
             'siteId' => 'siteId',
             'language' => 'language',
             'name' => 'name',
