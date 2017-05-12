@@ -6,7 +6,7 @@ use OpenOrchestra\ElasticaAdmin\Indexor\ContentIndexor;
 use OpenOrchestra\ModelInterface\ContentEvents;
 use OpenOrchestra\ModelInterface\Event\ContentEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use OpenOrchestra\Elastica\Exception\IndexorWrongParameterException;
+use OpenOrchestra\ElasticaAdmin\Exception\IndexorWrongParameterException;
 
 /**
  * Class UpdateContentIndexedSubscriber
