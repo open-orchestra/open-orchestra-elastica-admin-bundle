@@ -3,7 +3,7 @@
 namespace OpenOrchestra\ElasticaAdmin\Tests\Transformer;
 
 use Elastica\Document;
-use OpenOrchestra\BackOffice\DisplayBlock\DisplayBlockManager;
+use OpenOrchestra\Backoffice\DisplayBlock\DisplayBlockManager;
 use OpenOrchestra\ElasticaAdmin\Transformer\ModelToElasticaTransformerInterface;
 use OpenOrchestra\ElasticaAdmin\Transformer\NodeTransformer;
 use OpenOrchestra\ModelInterface\Model\ReadBlockInterface;
