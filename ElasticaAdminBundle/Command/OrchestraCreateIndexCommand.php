@@ -42,5 +42,7 @@ class OrchestraCreateIndexCommand extends ContainerAwareCommand
                 )
             )
         );
+        $message = 'Create Elastica Index';
+        $output->writeln(sprintf('<comment>></comment> <info>%s</info>', $message));
     }
 }

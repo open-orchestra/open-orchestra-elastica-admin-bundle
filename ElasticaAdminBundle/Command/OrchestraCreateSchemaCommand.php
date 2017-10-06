@@ -33,5 +33,7 @@ class OrchestraCreateSchemaCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->getContainer()->get('open_orchestra_elastica_admin.schema_initializer.manager')->initialize();
+        $message = 'Create Elastica Schema';
+        $output->writeln(sprintf('<comment>></comment> <info>%s</info>', $message));
     }
 }
