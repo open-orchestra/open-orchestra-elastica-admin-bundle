@@ -2,6 +2,7 @@
 
 namespace OpenOrchestra\ElasticaAdminBundle\Command;
 
+use Elastica\Exception\ResponseException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,6 +35,13 @@ class OrchestraDeleteIndexCommand extends ContainerAwareCommand
     {
         $indexName = $this->getContainer()->getParameter('open_orchestra_elastica.index.name');;
         $index = $this->getContainer()->get('open_orchestra_elastica.client.elastica')->getIndex($indexName);
-        $index->delete();
+        try {
+            $index->delete();
+            $message = 'Drop Elastica Index';
+            $output->writeln(sprintf('<comment>></comment> <info>%s</info>', $message));
+        } catch (ResponseException $e) {
+            $message = 'No Elastica Index to drop';
+            $output->writeln(sprintf('<comment>></comment> <info>%s</info>', $message));
+        }
     }
 }
