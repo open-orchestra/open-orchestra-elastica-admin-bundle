@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class ElasticaSearchStrategy extends AbstractBlockStrategy
 {
     protected $nodeRepository;
-    protected $specialPageList;
     protected $contextManager;
 
     /**
