@@ -18,13 +18,29 @@ class ElasticaSearchStrategyTest extends \PHPUnit_Framework_TestCase
      * @var ElasticaSearchStrategy
      */
     protected $strategy;
+    protected $nodeRepository;
+    protected $contextManager;
+    protected $siteId = 'fakeSiteId';
+    protected $language = 'fakeLanguage';
+    protected $nodeId = 'fakeNodeId';
+    protected $nodeName = 'fakeNodeName';
 
     /**
      * Set up the test
      */
     public function setUp()
     {
-        $this->strategy = new ElasticaSearchStrategy(array());
+        $this->nodeRepository = Phake::mock('OpenOrchestra\ModelInterface\Repository\NodeRepositoryInterface');
+        $this->contextManager = Phake::mock('OpenOrchestra\Backoffice\Context\ContextBackOfficeInterface');
+        $node = Phake::mock('OpenOrchestra\ModelInterface\Model\NodeInterface');
+
+        Phake::when($node)->getId()->thenReturn($this->nodeId);
+        Phake::when($node)->getName()->thenReturn($this->nodeName);
+        Phake::when($this->contextManager)->getSiteId()->thenReturn($this->siteId);
+        Phake::when($this->contextManager)->getSiteDefaultLanguage()->thenReturn($this->language);
+        Phake::when($this->nodeRepository)->findAllSpecialPage(Phake::anyParameters())->thenReturn(array($node));
+
+        $this->strategy = new ElasticaSearchStrategy($this->nodeRepository, $this->contextManager, array());
     }
 
     /**
@@ -79,8 +95,9 @@ class ElasticaSearchStrategyTest extends \PHPUnit_Framework_TestCase
 
         $this->strategy->buildForm($builder, array());
 
-        Phake::verify($builder)->add('contentNodeId', 'oo_node_choice', array(
+        Phake::verify($builder)->add('contentNodeId', 'choice', array(
             'label' => 'open_orchestra_elastica_admin.form.elastica_search.node',
+            'choices' => array($this->nodeId => $this->nodeName),
             'constraints' => new NotBlank(),
             'group_id' => 'data',
             'sub_group_id' => 'content',
