@@ -10,6 +10,7 @@ services:
             - '@open_orchestra_elastica_admin.mapper.form'
             - '%open_orchestra_elastica.index.name%'
             - '@open_orchestra_elastica_admin.factory.mapping'
+            - '@open_orchestra_model.repository.content'
     open_orchestra_elastica_admin.schema_generator.node:
         class: '%open_orchestra_elastica_admin.schema_generator.node.class%'
         arguments:
