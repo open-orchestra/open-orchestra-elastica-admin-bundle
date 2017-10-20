@@ -82,9 +82,6 @@ class ContentTypeSchemaGenerator implements DocumentToElasticaSchemaGeneratorInt
             ]
         ]);
 
-
-        var_dump($removeExistingMappingPropertiesCommand);
-
         $temporaryIndex = $this->client->getIndex($temporaryName);
         $type = $temporaryIndex->getType(self::INDEX_TYPE . $contentType->getContentTypeId());
         $mappingProperties = array(

@@ -6,7 +6,6 @@ use OpenOrchestra\Backoffice\Event\FieldFormEvent;
 use OpenOrchestra\Backoffice\Form\FieldFormEvents;
 use OpenOrchestra\ElasticaAdmin\Mapper\FieldToElasticaTypeMapper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Translation\TranslatorInterface;
 

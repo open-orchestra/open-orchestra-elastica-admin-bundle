@@ -31,6 +31,7 @@ class ContentTypeSchemaGeneratorTest extends \PHPUnit_Framework_TestCase
     protected $formMapper;
     protected $elasticaType;
     protected $mappingFactory;
+    protected $contentRepository;
 
     /**
      * Set up the test
@@ -46,10 +47,21 @@ class ContentTypeSchemaGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->type = Phake::mock(Type::CLASS);
         $this->index = Phake::mock(Index::CLASS);
         Phake::when($this->index)->getType(Phake::anyParameters())->thenReturn($this->type);
+        Phake::when($this->index)->getClient()->thenReturn(
+            Phake::mock('Elastica\Client')
+        );
+
         $this->client = Phake::mock(Client::CLASS);
         Phake::when($this->client)->getIndex(Phake::anyParameters())->thenReturn($this->index);
+        $this->contentRepository = Phake::mock('OpenOrchestra\ModelInterface\Repository\ContentRepositoryInterface');
 
-        $this->schemaGenerator = new ContentTypeSchemaGenerator($this->client, $this->formMapper, 'orchestra', $this->mappingFactory);
+        $this->schemaGenerator = new ContentTypeSchemaGenerator(
+            $this->client,
+            $this->formMapper,
+            'orchestra',
+            $this->mappingFactory,
+            $this->contentRepository
+        );
     }
 
     /**
@@ -88,7 +100,7 @@ class ContentTypeSchemaGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->schemaGenerator->createMapping($contentType);
 
         Phake::verify($this->client)->getIndex('orchestra');
-        Phake::verify($this->index)->getType('content_contentTypeId');
+        Phake::verify($this->index, Phake::times(2))->getType('content_contentTypeId');
         Phake::verify($mapping)->setProperties(array(
             'id' => array('type' => 'string', 'include_in_all' => true),
             'elementId' => array('type' => 'string', 'include_in_all' => true),
