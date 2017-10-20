@@ -11,6 +11,12 @@ open_orchestra_elastica_admin:
             search_limit: Limite de résultat
         elastica_search:
             node: Nœud d'affichage des résultats
+        field_type:
+            change:
+                title: Conflit Elastic search
+                message: >
+                    Ce changement de type génère un conflit dans la réindexation Elastic Search.
+                    Les valeurs de l'attribut correspondant seront supprimées lors de la soumission du formulaire.
     block_configuration:
         category:
             search: Recherche
