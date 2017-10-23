@@ -5,6 +5,7 @@ namespace OpenOrchestra\ElasticaAdmin\Tests\SchemaGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Elastica\Client;
 use Elastica\Index;
+use Elastica\Request;
 use Elastica\Type;
 use Elastica\Type\Mapping;
 use OpenOrchestra\ElasticaAdmin\Factory\MappingFactory;
@@ -47,9 +48,13 @@ class ContentTypeSchemaGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->type = Phake::mock(Type::CLASS);
         $this->index = Phake::mock(Index::CLASS);
         Phake::when($this->index)->getType(Phake::anyParameters())->thenReturn($this->type);
-        Phake::when($this->index)->getClient()->thenReturn(
-            Phake::mock('Elastica\Client')
-        );
+        Phake::when($this->type)->getMapping()->thenReturn(array(
+            'content_contentTypeId' => array(
+                'properties' => array(
+                    'attribute_fieldId1' => array('type' => 'date')
+                )
+            )
+        ));
 
         $this->client = Phake::mock(Client::CLASS);
         Phake::when($this->client)->getIndex(Phake::anyParameters())->thenReturn($this->index);
@@ -100,6 +105,18 @@ class ContentTypeSchemaGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->schemaGenerator->createMapping($contentType);
 
         Phake::verify($this->client)->getIndex('orchestra');
+        Phake::verify($this->client)->request('_reindex', Request::POST, [
+                "source" => [
+                    "index" => 'orchestra'
+                ],
+                "dest" => [
+                    "index" => $this->schemaGenerator->getTemporaryIndexName()
+                ],
+                "script" => [
+                    "inline" => "if (ctx._source._type == 'content_contentTypeId') {ctx._source.remove('attribute_fieldId1');ctx._source.remove('attribute_fieldId1_stringValue');}"
+                ]
+            ]
+        );
         Phake::verify($this->index, Phake::times(2))->getType('content_contentTypeId');
         Phake::verify($mapping)->setProperties(array(
             'id' => array('type' => 'string', 'include_in_all' => true),
@@ -115,9 +132,9 @@ class ContentTypeSchemaGeneratorTest extends \PHPUnit_Framework_TestCase
             'attribute_fieldId1' => array('type' => $this->elasticaType, 'include_in_all' => false),
             'attribute_fieldId1_stringValue' => array('type' => 'string', 'include_in_all' => true),
         ));
-        Phake::verify($field1)->isSearchable();
-        Phake::verify($field2)->isSearchable();
-        Phake::verify($this->formMapper)->map($fieldType);
+        Phake::verify($field1, Phake::times(2))->isSearchable();
+        Phake::verify($field2, Phake::times(2))->isSearchable();
+        Phake::verify($this->formMapper, Phake::times(2))->map($fieldType);
     }
 
     /**

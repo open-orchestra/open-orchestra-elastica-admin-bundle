@@ -19,6 +19,7 @@ class ContentTypeSchemaGenerator implements DocumentToElasticaSchemaGeneratorInt
 
     protected $client;
     protected $indexName;
+    protected $temporaryIndexName;
     protected $formMapper;
     protected $mappingFactory;
 
@@ -50,7 +51,7 @@ class ContentTypeSchemaGenerator implements DocumentToElasticaSchemaGeneratorInt
      */
     public function createMapping($contentType)
     {
-        $temporaryName = uniqid() . $this->indexName;
+        $this->setTemporaryIndexName();
         $index = $this->client->getIndex($this->indexName);
         $type = $index->getType(self::INDEX_TYPE . $contentType->getContentTypeId());
 
@@ -70,19 +71,19 @@ class ContentTypeSchemaGenerator implements DocumentToElasticaSchemaGeneratorInt
         }
         $removeExistingMappingPropertiesCommand .= "}";
 
-        $index->getClient()->request('_reindex', Request::POST, [
+        $this->client->request('_reindex', Request::POST, [
             "source" => [
                 "index" => $this->indexName
             ],
             "dest" => [
-                "index" => $temporaryName
+                "index" => $this->temporaryName
             ],
             "script" => [
                 "inline" => $removeExistingMappingPropertiesCommand
             ]
         ]);
 
-        $temporaryIndex = $this->client->getIndex($temporaryName);
+        $temporaryIndex = $this->client->getIndex($this->getTemporaryIndexName());
         $type = $temporaryIndex->getType(self::INDEX_TYPE . $contentType->getContentTypeId());
         $mappingProperties = array(
             'id' => array('type' => 'string', 'include_in_all' => true),
@@ -109,5 +110,21 @@ class ContentTypeSchemaGenerator implements DocumentToElasticaSchemaGeneratorInt
 
         $index->delete();
         $temporaryIndex->addAlias($this->indexName);
+    }
+
+    /**
+     * Set temporary index name
+     */
+    public function setTemporaryIndexName() {
+        $this->temporaryName = uniqid() . $this->indexName;
+    }
+
+    /**
+     * Get temporary index name
+     *
+     * @return string
+     */
+    public function getTemporaryIndexName() {
+        return $this->temporaryName;
     }
 }
