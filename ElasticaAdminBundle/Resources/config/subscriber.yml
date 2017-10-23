@@ -2,6 +2,7 @@ parameters:
     open_orchestra_elastica_admin.subscriber.content_index.class: OpenOrchestra\ElasticaAdmin\EventSubscriber\UpdateContentIndexedSubscriber
     open_orchestra_elastica_admin.subscriber.node_index.class: OpenOrchestra\ElasticaAdmin\EventSubscriber\UpdateNodeIndexedSubscriber
     open_orchestra_elastica_admin.subscriber.content_schema.class: OpenOrchestra\ElasticaAdmin\EventSubscriber\UpdateContentSchemaSubscriber
+    open_orchestra_elastica_admin.subscriber.content_type_field_change.class: OpenOrchestra\ElasticaAdmin\EventSubscriber\ContentTypeFieldChangeSubscriber
 
 services:
     open_orchestra_elastica_admin.subscriber.content_index:
@@ -20,5 +21,12 @@ services:
         class: '%open_orchestra_elastica_admin.subscriber.node_index.class%'
         arguments:
             - '@open_orchestra_elastica_admin.indexor.node'
+        tags:
+            - { name: kernel.event_subscriber }
+    open_orchestra_elastica_admin.subscriber.content_type_field_change:
+        class: '%open_orchestra_elastica_admin.subscriber.content_type_field_change.class%'
+        arguments:
+            - '@open_orchestra_elastica_admin.mapper.form'
+            - '@translator'
         tags:
             - { name: kernel.event_subscriber }

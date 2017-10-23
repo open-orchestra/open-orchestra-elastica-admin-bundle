@@ -3,10 +3,12 @@
 namespace OpenOrchestra\ElasticaAdmin\SchemaGenerator;
 
 use Elastica\Client;
+use Elastica\Request;
 use OpenOrchestra\ElasticaAdmin\Factory\MappingFactory;
 use OpenOrchestra\ElasticaAdmin\Mapper\FieldToElasticaTypeMapper;
 use OpenOrchestra\ModelInterface\Model\ContentTypeInterface;
 use OpenOrchestra\ModelInterface\Model\FieldTypeInterface;
+use OpenOrchestra\ModelInterface\Repository\ContentRepositoryInterface;
 
 /**
  * Class ContentTypeSchemaGenerator
@@ -17,21 +19,29 @@ class ContentTypeSchemaGenerator implements DocumentToElasticaSchemaGeneratorInt
 
     protected $client;
     protected $indexName;
+    protected $temporaryIndexName;
     protected $formMapper;
     protected $mappingFactory;
 
     /**
-     * @param Client                    $client
-     * @param FieldToElasticaTypeMapper $formMapper
-     * @param string                    $indexName
-     * @param MappingFactory            $mappingFactory
+     * @param Client                     $client
+     * @param FieldToElasticaTypeMapper  $formMapper
+     * @param string                     $indexName
+     * @param MappingFactory             $mappingFactory
+     * @param ContentRepositoryInterface $contentRepository
      */
-    public function __construct(Client $client, FieldToElasticaTypeMapper $formMapper, $indexName, MappingFactory $mappingFactory)
-    {
+    public function __construct(
+        Client $client,
+        FieldToElasticaTypeMapper $formMapper,
+        $indexName,
+        MappingFactory $mappingFactory,
+        ContentRepositoryInterface $contentRepository
+    ) {
         $this->client = $client;
         $this->indexName = $indexName;
         $this->formMapper = $formMapper;
         $this->mappingFactory = $mappingFactory;
+        $this->contentRepository = $contentRepository;
     }
 
     /**
@@ -41,9 +51,40 @@ class ContentTypeSchemaGenerator implements DocumentToElasticaSchemaGeneratorInt
      */
     public function createMapping($contentType)
     {
+        $this->setTemporaryIndexName();
         $index = $this->client->getIndex($this->indexName);
         $type = $index->getType(self::INDEX_TYPE . $contentType->getContentTypeId());
 
+        $removeExistingMappingPropertiesCommand = "if (ctx._source._type == '".self::INDEX_TYPE . $contentType->getContentTypeId() ."') {";
+        if(!empty($type->getMapping())) {
+            $existingMappingProperties = $type->getMapping()[self::INDEX_TYPE . $contentType->getContentTypeId()]['properties'];
+            foreach ($contentType->getFields() as $field) {
+                $fiedlId = 'attribute_' . $field->getFieldId();
+                if ($field->isSearchable() &&
+                    array_key_exists($fiedlId, $existingMappingProperties) &&
+                    $this->formMapper->map($field->getType()) != $existingMappingProperties[$fiedlId]['type']
+                ) {
+                    $removeExistingMappingPropertiesCommand .= "ctx._source.remove('" . $fiedlId . "');ctx._source.remove('" . $fiedlId . "_stringValue');";
+                    $this->contentRepository->deleteAttributeForContentType($field->getFieldId(), $contentType->getContentTypeId());
+                }
+            }
+        }
+        $removeExistingMappingPropertiesCommand .= "}";
+
+        $this->client->request('_reindex', Request::POST, [
+            "source" => [
+                "index" => $this->indexName
+            ],
+            "dest" => [
+                "index" => $this->temporaryName
+            ],
+            "script" => [
+                "inline" => $removeExistingMappingPropertiesCommand
+            ]
+        ]);
+
+        $temporaryIndex = $this->client->getIndex($this->getTemporaryIndexName());
+        $type = $temporaryIndex->getType(self::INDEX_TYPE . $contentType->getContentTypeId());
         $mappingProperties = array(
             'id' => array('type' => 'string', 'include_in_all' => true),
             'elementId' => array('type' => 'string', 'include_in_all' => true),
@@ -56,7 +97,6 @@ class ContentTypeSchemaGenerator implements DocumentToElasticaSchemaGeneratorInt
             'keywords' => array('type' => 'string', 'include_in_all' => true),
             'updatedAt' => array('type' => 'long', 'include_in_all' => false),
         );
-
         /** @var FieldTypeInterface $field */
         foreach ($contentType->getFields() as $field) {
             if ($field->isSearchable()) {
@@ -64,9 +104,27 @@ class ContentTypeSchemaGenerator implements DocumentToElasticaSchemaGeneratorInt
                 $mappingProperties['attribute_' . $field->getFieldId() . '_stringValue'] = array('type' => 'string', 'include_in_all' => true);
             }
         }
-
         $mapping = $this->mappingFactory->create($type);
         $mapping->setProperties($mappingProperties);
         $mapping->send();
+
+        $index->delete();
+        $temporaryIndex->addAlias($this->indexName);
+    }
+
+    /**
+     * Set temporary index name
+     */
+    public function setTemporaryIndexName() {
+        $this->temporaryName = uniqid() . $this->indexName;
+    }
+
+    /**
+     * Get temporary index name
+     *
+     * @return string
+     */
+    public function getTemporaryIndexName() {
+        return $this->temporaryName;
     }
 }

@@ -18,6 +18,12 @@ open_orchestra_elastica_admin:
             search_limit: Results limit
         elastica_search:
             node: Node to view results
+        field_type:
+            change:
+                title: Elastic search conflict
+                message: >
+                    This type change generates a conflict in Elastic Search reindexation.
+                    The values ​​in the corresponding attribute will be deleted when the form is submitted.
     block_configuration:
         category:
             search: Search
