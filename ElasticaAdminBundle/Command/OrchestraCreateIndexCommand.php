@@ -38,7 +38,7 @@ class OrchestraCreateIndexCommand extends ContainerAwareCommand
             array(
                 'index' => array(
                     'number_of_shards' => 2,
-                    'number_of_replicas' => 1
+                    'number_of_replicas' => 0
                 )
             )
         );
